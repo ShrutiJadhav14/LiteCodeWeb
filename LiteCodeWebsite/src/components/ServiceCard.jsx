@@ -1,19 +1,27 @@
-import React from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
-const ServiceCard = ({ icon: Icon, title, description }) => {
+const ServiceCard = ({ icon: Icon, title, description, slug }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="bg-white shadow-lg hover:shadow-xl transition-shadow rounded-2xl p-6 flex flex-col h-full">
-      <div className="text-indigo-600 mb-4">
-        <Icon size={36} className="opacity-90" />
+    <div className="bg-white rounded-xl p-6 shadow hover:shadow-lg transition h-full flex flex-col">
+      <div className="mb-4 text-indigo-600">
+        <Icon size={36} />
       </div>
-      <h3 className="text-xl font-semibold text-gray-900 mb-2">{title}</h3>
-      <p className="text-gray-600 flex-1">{description}</p>
-      <div className="mt-4">
-       <button className="text-indigo-600 font-semibold hover:underline hover:scale-105 transition-transform">
-        Learn More →
-        </button>
 
-      </div>
+      <h3 className="text-lg font-semibold mb-2">{title}</h3>
+
+      <p className="text-gray-600 text-sm flex-grow">
+        {description}
+      </p>
+
+      <button
+        onClick={() => navigate(`/services/${slug}`)}
+        className="mt-4 inline-flex items-center gap-2 text-indigo-600 font-semibold hover:gap-3 transition"
+      >
+        Learn More <ArrowRight size={16} />
+      </button>
     </div>
   );
 };
