@@ -8,8 +8,7 @@ import { useNavigate } from "react-router-dom";
 const STORAGE_KEY = "litecode_chat";
 
 const BOT_KNOWLEDGE = {
-  greeting:
-    "👋 Hi there! How can I help you today?",
+  greeting: "👋 Hi there! How can I help you today?",
   services:
     "We build web & mobile apps, AI platforms, SaaS products, cloud and enterprise software.",
   tech:
@@ -39,31 +38,12 @@ const SUGGESTIONS = {
     "How much does a project cost?",
     "Which technologies do you use?",
   ],
-  services: [
-    "Pricing details",
-    "Project timeline",
-    "Technologies used",
-  ],
-  tech: [
-    "Is React right for my project?",
-    "Do you deploy on cloud?",
-  ],
-  pricing: [
-    "Get a free consultation",
-    "Project timelines",
-  ],
-  timeline: [
-    "Can you deliver fast?",
-    "How do you ensure deadlines?",
-  ],
-  support: [
-    "Do you offer AMC?",
-    "How long is support provided?",
-  ],
-  fallback: [
-    "Talk to an expert",
-    "Try another question",
-  ],
+  services: ["Pricing details", "Project timeline", "Technologies used"],
+  tech: ["Is React right for my project?", "Do you deploy on cloud?"],
+  pricing: ["Get a free consultation", "Project timelines"],
+  timeline: ["Can you deliver fast?", "How do you ensure deadlines?"],
+  support: ["Do you offer AMC?", "How long is support provided?"],
+  fallback: ["Talk to an expert", "Try another question"],
 };
 
 /* -------------------- COMPONENT -------------------- */
@@ -76,6 +56,7 @@ const ChatBot = () => {
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
   const [lastIntent, setLastIntent] = useState("greeting");
+  const [showWelcome, setShowWelcome] = useState(false); // start hidden
 
   const [messages, setMessages] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -94,6 +75,12 @@ const ChatBot = () => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, typing]);
 
+  // Show welcome popup after 3-4 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => setShowWelcome(true), 3500); // 3.5 sec delay
+    return () => clearTimeout(timer);
+  }, []);
+
   /* -------------------- HELPERS -------------------- */
 
   const detectIntent = (text) => {
@@ -108,30 +95,23 @@ const ChatBot = () => {
 
   const botReply = (intent) => {
     setTyping(true);
-
     setTimeout(() => {
       setTyping(false);
-
       setMessages((prev) =>
         prev
           .map((m, i) =>
-            i === prev.length - 1 && m.from === "user"
-              ? { ...m, seen: true }
-              : m
+            i === prev.length - 1 && m.from === "user" ? { ...m, seen: true } : m
           )
           .concat({ from: "bot", text: BOT_KNOWLEDGE[intent] })
       );
-
       setLastIntent(intent);
     }, 800 + Math.random() * 600);
   };
 
   const sendMessage = (text = input) => {
     if (!text.trim()) return;
-
     setMessages((prev) => [...prev, { from: "user", text }]);
     setInput("");
-
     const intent = detectIntent(text);
     botReply(intent);
   };
@@ -139,9 +119,29 @@ const ChatBot = () => {
   /* -------------------- UI -------------------- */
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
 
-      {/* Floating Button */}
+      {/* ----------------- WELCOME POPUP ----------------- */}
+      <AnimatePresence>
+        {showWelcome && !open && (
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 50 }}
+            className="absolute right-full bottom-0 mr-2 bg-indigo-600 text-white px-3 py-1 rounded-full shadow-lg whitespace-nowrap"
+          >
+            Hey! How can I help you?
+            <button
+              onClick={() => setShowWelcome(false)}
+              className="ml-2 text-white opacity-80 hover:opacity-100"
+            >
+              <X size={14} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ----------------- CHAT BUTTON ----------------- */}
       {!open && (
         <motion.button
           whileHover={{ scale: 1.1 }}
@@ -152,7 +152,7 @@ const ChatBot = () => {
         </motion.button>
       )}
 
-      {/* Chat Window */}
+      {/* ----------------- CHAT WINDOW ----------------- */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -160,9 +160,8 @@ const ChatBot = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 120, opacity: 0 }}
             transition={{ type: "spring", bounce: 0.3 }}
-            className="w-[360px] h-[600px] bg-white rounded-2xl shadow-[0_40px_100px_rgba(0,0,0,0.25)] flex flex-col"
+            className="w-[360px] h-[600px] bg-white rounded-2xl shadow-[0_40px_100px_rgba(0,0,0,0.25)] flex flex-col mt-2"
           >
-
             {/* Header */}
             <div className="flex justify-between items-center px-4 py-2.5 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
               <div>
@@ -177,23 +176,20 @@ const ChatBot = () => {
             {/* Messages */}
             <div className="flex-1 px-4 py-3 space-y-3 overflow-y-auto scrollbar-hide">
               {messages.map((msg, i) => (
-                <div key={i} className={`max-w-[85%] ${msg.from === "user" ? "ml-auto" : ""}`}>
+                <div
+                  key={i}
+                  className={`max-w-[85%] ${msg.from === "user" ? "ml-auto" : ""}`}
+                >
                   <div
                     className={`px-4 py-2 rounded-xl text-sm ${
-                      msg.from === "bot"
-                        ? "bg-gray-100"
-                        : "bg-indigo-600 text-white"
+                      msg.from === "bot" ? "bg-gray-100" : "bg-indigo-600 text-white"
                     }`}
                   >
                     {msg.text}
                   </div>
-
                   {msg.from === "user" && (
                     <div className="flex justify-end mt-1 text-gray-400">
-                      <CheckCheck
-                        size={14}
-                        className={msg.seen ? "text-indigo-600" : ""}
-                      />
+                      <CheckCheck size={14} className={msg.seen ? "text-indigo-600" : ""} />
                     </div>
                   )}
                 </div>
@@ -212,16 +208,13 @@ const ChatBot = () => {
             </div>
 
             {/* Suggestions */}
-            + <div className="px-4 py-2 border-t space-y-1.5">
+            <div className="px-4 py-2 border-t space-y-1.5">
               <p className="text-xs text-gray-400">Suggested questions</p>
-
               {(SUGGESTIONS[lastIntent] || []).map((q, i) => (
                 <button
                   key={i}
                   onClick={() =>
-                    q === "Talk to an expert"
-                      ? navigate("/contact")
-                      : sendMessage(q)
+                    q === "Talk to an expert" ? navigate("/contact") : sendMessage(q)
                   }
                   className="w-full text-left text-sm px-3 py-2 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700"
                 >
@@ -231,7 +224,7 @@ const ChatBot = () => {
             </div>
 
             {/* Input */}
-            + <div className="p-2.5 border-t flex gap-2">
+            <div className="p-2.5 border-t flex gap-2">
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -246,7 +239,6 @@ const ChatBot = () => {
                 <Send size={18} />
               </button>
             </div>
-
           </motion.div>
         )}
       </AnimatePresence>
