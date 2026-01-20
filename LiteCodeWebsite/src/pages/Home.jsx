@@ -5,7 +5,8 @@ import team from '../assets/team.svg';
 import {useNavigate} from "react-router-dom";
 import ClientsSection from "../components/ClientsSection";
 import StatsSection from "../components/StatsSection";
-import WhatsAppFloat from "../components/WhatsAppFloat";
+import ChatBot from "../components/Chatbot";
+
 
 function Home() {
 
@@ -142,7 +143,7 @@ return (
 
     <ClientsSection />
     <StatsSection />
-    <WhatsAppFloat />
+    <ChatBot/>
 </>
 );
 }
