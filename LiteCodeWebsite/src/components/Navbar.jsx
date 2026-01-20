@@ -169,7 +169,6 @@ const Navbar = () => {
           <MenuItem to="/" end>Home</MenuItem>
           <MenuItem to="/about">About</MenuItem>
           <MenuItem to="/services">Services</MenuItem>
-          <MenuItem to="/tech">Technology</MenuItem>
           <CTA to="/contact">Contact</CTA>
         </MenuWrap>
 
@@ -185,7 +184,7 @@ const Navbar = () => {
           <MobileLink to="/" onClick={() => setOpen(false)}>Home</MobileLink>
           <MobileLink to="/about" onClick={() => setOpen(false)}>About</MobileLink>
           <MobileLink to="/services" onClick={() => setOpen(false)}>Services</MobileLink>
-          <MobileLink to="/tech" onClick={() => setOpen(false)}>Technology</MobileLink>
+          
           <MobileLink to="/contact" onClick={() => setOpen(false)}>Contact</MobileLink>
         </MobileDropdown>
       )}

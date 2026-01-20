@@ -2,10 +2,10 @@ import { Briefcase, Smile, Users, Award } from "lucide-react";
 import { motion } from "framer-motion";
 
 const stats = [
-  { value: "55+", label: "Completed Projects", icon: Briefcase },
-  { value: "25+", label: "Happy Clients", icon: Smile },
-  { value: "10+", label: "Expert Employees", icon: Users },
-  { value: "5+", label: "Awards Won", icon: Award },
+  { value: "100+", label: "Completed Projects", icon: Briefcase },
+  { value: "50+", label: "Happy Clients", icon: Smile },
+  { value: "30+", label: "Expert Employees", icon: Users },
+  { value: "15+", label: "Awards Won", icon: Award },
 ];
 
 const StatsSection = () => {

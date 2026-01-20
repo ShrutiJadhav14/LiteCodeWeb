@@ -11,6 +11,7 @@ import {
   Settings,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import WhatsAppFloat from "../components/WhatsAppFloat";
 
 const services = [
   {
@@ -124,6 +125,7 @@ const Services = () => {
         </motion.div>
 
       </div>
+      <WhatsAppFloat />
     </section>
   );
 };
