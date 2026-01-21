@@ -39,8 +39,13 @@ const Careers = () => {
   }, [jobs, search, typeFilter]);
 
   return (
-    <section className="relative py-28 bg-gradient-to-br from-slate-50 to-gray-100">
-      <div className="max-w-7xl mx-auto px-6">
+    <section className="relative py-28 bg-gradient-to-br from-slate-50 via-gray-50 to-indigo-50 overflow-hidden">
+
+      {/* BACKGROUND BLOBS */}
+      <div className="absolute -top-40 -left-40 w-[500px] h-[500px] bg-indigo-300/20 rounded-full blur-3xl" />
+      <div className="absolute top-1/3 -right-40 w-[500px] h-[500px] bg-purple-300/20 rounded-full blur-3xl" />
+
+      <div className="relative max-w-7xl mx-auto px-6">
 
         {/* HEADER */}
         <motion.div
@@ -48,38 +53,41 @@ const Careers = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-14"
+          className="text-center mb-16"
         >
+          <span className="inline-block mb-4 px-5 py-1.5 text-sm font-semibold rounded-full bg-indigo-100 text-indigo-700">
+            Careers at LiteCode
+          </span>
+
           <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-900">
-            Career Opportunities
+            Join Our Team
           </h1>
+
           <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
-            Find the right role that matches your skills and career goals.
+            Explore exciting opportunities and build your career with a fast-growing tech team.
           </p>
         </motion.div>
 
-        {/* SEARCH + FILTER BAR */}
+        {/* SEARCH + FILTER */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="bg-white rounded-2xl shadow p-6 mb-12 flex flex-col md:flex-row gap-4"
+          className="bg-white rounded-2xl shadow-md p-6 mb-14 flex flex-col md:flex-row gap-4"
         >
-          {/* SEARCH */}
           <input
             type="text"
-            placeholder="Search job title or location..."
+            placeholder="Search by job title or location..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
 
-          {/* JOB TYPE FILTER */}
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
-            className="border rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
             {JOB_TYPES.map((type) => (
               <option key={type} value={type}>
@@ -91,9 +99,9 @@ const Careers = () => {
 
         {/* JOB LIST */}
         {filteredJobs.length === 0 ? (
-          <div className="text-center bg-white rounded-2xl p-10 shadow">
+          <div className="bg-white rounded-2xl p-12 shadow text-center">
             <p className="text-gray-600 text-lg">
-              No jobs found for selected criteria.
+              No job openings match your search.
             </p>
           </div>
         ) : (
@@ -101,13 +109,19 @@ const Careers = () => {
             {filteredJobs.map((job, i) => (
               <motion.div
                 key={job.id}
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.05 }}
-                className="bg-white rounded-2xl p-7 shadow hover:shadow-xl transition"
+                whileHover={{ y: -6 }}
+                className="group bg-white rounded-2xl p-7 shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100"
               >
-                <h3 className="text-2xl font-bold text-gray-800">
+                {/* JOB TYPE BADGE */}
+                <span className="inline-block mb-3 px-3 py-1 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-700">
+                  {job.type}
+                </span>
+
+                <h3 className="text-2xl font-bold text-gray-800 group-hover:text-indigo-600 transition">
                   {job.title}
                 </h3>
 
@@ -126,10 +140,17 @@ const Careers = () => {
                 </p>
 
                 <button
-                  onClick={() => navigate("/contact")}
-                  className="mt-6 inline-flex items-center gap-2 text-indigo-600 font-semibold hover:gap-3 transition-all"
+                  onClick={() =>
+                    navigate(
+                      "/contact?job=" + encodeURIComponent(job.title)
+                    )
+                  }
+                  className="mt-6 inline-flex items-center gap-2 font-semibold text-indigo-600 group-hover:gap-3 transition-all"
                 >
-                  Apply Now <span className="text-lg">→</span>
+                  Apply Now
+                  <span className="text-lg transition-transform group-hover:translate-x-1">
+                    →
+                  </span>
                 </button>
               </motion.div>
             ))}
