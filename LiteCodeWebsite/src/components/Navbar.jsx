@@ -37,7 +37,7 @@ const Logo = styled.img`
 `;
 
 const Brand = styled.span`
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-weight: 800;
 `;
 

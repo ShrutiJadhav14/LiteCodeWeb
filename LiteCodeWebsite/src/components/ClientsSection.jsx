@@ -5,6 +5,7 @@ import hvc from "../assets/images/hvc-logo.png";
 import opalForce from "../assets/images/OpalForce-logo.png";
 import yantra from "../assets/images/yantra-logo.png";
 import { motion } from "framer-motion";
+import rotary from "../assets/images/rotary-logo.png";
 
 const logos = [
   { src: achev, name: "Achev" },
@@ -13,6 +14,7 @@ const logos = [
   { src: hvc, name: "HVC" },
   { src: opalForce, name: "OpalForce" },
   { src: yantra, name: "Yantra" },
+  { src: rotary, name: "Rotary" },
 ];
 
 const ClientsSection = () => {
@@ -38,24 +40,33 @@ const ClientsSection = () => {
         </div>
 
         {/* Logo Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+        <div className="grid gap-10 
+                        grid-cols-2 
+                        sm:grid-cols-3 
+                        lg:grid-cols-4 
+                        place-items-center">
           {logos.map((logo, index) => (
             <motion.div
               key={index}
-              className="group flex items-center justify-center bg-white/80 backdrop-blur rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
+              className="group w-full max-w-[350px] flex items-center justify-center 
+                        bg-white/80 backdrop-blur rounded-2xl p-8 
+                        shadow-lg hover:shadow-2xl 
+                        transition-all duration-300 hover:-translate-y-2"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ delay: index * 0.15, duration: 0.6 }}
+              transition={{ delay: index * 0.12, duration: 0.6 }}
             >
               <img
                 src={logo.src}
                 alt={`${logo.name} Logo`}
-                className="h-20 object-contain grayscale group-hover:grayscale-0 transition duration-300"
+                className="h-20 object-contain grayscale 
+                          group-hover:grayscale-0 transition duration-300"
               />
             </motion.div>
           ))}
         </div>
+
       </div>
     </section>
   );
