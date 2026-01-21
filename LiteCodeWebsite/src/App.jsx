@@ -9,30 +9,27 @@ import ServiceDetail from './pages/ServiceDetail';
 import Careers from './pages/Careers';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
-import ProtectedRoute from './components/ProtectedRoute'; 
 import Home from './pages/Home';
+import ProtectedRoute from './routes/ProtectedRoute';
+import ScrollTop from './utils/ScrollTop';
+
 const App = () => {
   return (
     <BrowserRouter>
+      <ScrollTop />
       
         <Navbar />
         <main className="pt-16">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/services/:slug" element={<ServiceDetail />} />
-          <Route path="/careers" element={<Careers />} />
+          <Route path="/about" element={<ProtectedRoute><About /></ProtectedRoute>} />
+          <Route path="/contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />
+          <Route path="/services" element={<ProtectedRoute><Services /></ProtectedRoute>} />
+          <Route path="/services/:slug" element={<ProtectedRoute><ServiceDetail /></ProtectedRoute>} />
+          <Route path="/careers" element={<ProtectedRoute><Careers /></ProtectedRoute>} />
           <Route path="/admin-login" element={<AdminLogin />} />
-                <Route
-        path="/admin-dashboard"
-        element={
-         <ProtectedRoute>
-        <AdminDashboard />
-       </ProtectedRoute>
-       }
-  />
+          <Route path="/admin-dashboard" element={ <ProtectedRoute><AdminDashboard /> </ProtectedRoute>} />
+          
          </Routes>
     
         </main>

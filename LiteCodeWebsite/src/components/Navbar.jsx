@@ -36,12 +36,18 @@ const LogoBox = styled(Link)`
 
 const Logo = styled.img`
   width: 46px;
+  height: auto;
 `;
 
 const Brand = styled.span`
-  font-size: 1.6rem;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.75rem;
   font-weight: 800;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
 `;
+
 
 const Lite = styled.span`
   color: #0ea5e9;
@@ -49,6 +55,7 @@ const Lite = styled.span`
 
 const Code = styled.span`
   color: #fb923c;
+  margin-left: 4px;
 `;
 
 const MenuWrap = styled.nav`
