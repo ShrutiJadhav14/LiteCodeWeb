@@ -7,18 +7,22 @@ import Contact from './pages/Contact';
 import Services from './pages/Services';
 import ServiceDetail from './pages/ServiceDetail';
 import Home from './pages/Home';
+import ProtectedRoute from './routes/ProtectedRoute';
+import ScrollTop from './utils/ScrollTop';
+
 const App = () => {
   return (
     <BrowserRouter>
+      <ScrollTop />
       
         <Navbar />
         <main className="pt-16">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/services/:slug" element={<ServiceDetail />} />
+          <Route path="/about" element={<ProtectedRoute><About /></ProtectedRoute>} />
+          <Route path="/contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />
+          <Route path="/services" element={<ProtectedRoute><Services /></ProtectedRoute>} />
+          <Route path="/services/:slug" element={<ProtectedRoute><ServiceDetail /></ProtectedRoute>} />
          </Routes>
         </main>
         <Footer />
