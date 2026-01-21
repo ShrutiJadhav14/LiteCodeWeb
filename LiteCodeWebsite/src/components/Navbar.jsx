@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Menu, X } from "lucide-react";
 import { Link, NavLink } from "react-router-dom";
@@ -11,9 +11,11 @@ const Header = styled.header`
   top: 0;
   width: 100%;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid #e5e7eb;
+  transition: background 0.35s ease, box-shadow 0.35s ease;
+  background: ${({ $scrolled }) =>
+    $scrolled ? "rgba(255,255,255,0.97)" : "#111827"};
+  box-shadow: ${({ $scrolled }) =>
+    $scrolled ? "0 6px 25px rgba(0,0,0,0.08)" : "none"};
 `;
 
 const Nav = styled.div`
@@ -33,7 +35,7 @@ const LogoBox = styled(Link)`
 `;
 
 const Logo = styled.img`
-  width: 48px;
+  width: 46px;
 `;
 
 const Brand = styled.span`
@@ -62,7 +64,7 @@ const MenuWrap = styled.nav`
 const MenuItem = styled(NavLink)`
   font-size: 1.05rem;
   font-weight: 500;
-  color: #0ea5e9;
+  color: ${({ $scrolled }) => ($scrolled ? "#0ea5e9" : "#e5e7eb")};
   text-decoration: none;
   position: relative;
   transition: color 0.3s ease;
@@ -93,43 +95,40 @@ const MenuItem = styled(NavLink)`
 `;
 
 const CTA = styled(Link)`
-  padding: 0.65rem 1.8rem;
+  padding: 0.6rem 1.6rem;
   border-radius: 999px;
   font-weight: 600;
-  font-size: 1rem;
-  color: #ffffff;
+  font-size: 0.95rem;
+  color: white;
   text-decoration: none;
-  background-color: #2563eb; /* blue */
+  background: #2563eb;
   transition: all 0.3s ease;
 
   &:hover {
-    background-color: #1d4ed8;
+    background: #1d4ed8;
     transform: translateY(-1px);
   }
 `;
-
-
 
 const MobileBtn = styled.button`
   background: none;
   border: none;
   display: none;
+  color: ${({ $scrolled }) => ($scrolled ? "#111827" : "#ffffff")};
 
   @media (max-width: 900px) {
     display: block;
   }
 `;
 
-/* ===== MOBILE DROPDOWN (NOT FULL SCREEN) ===== */
-
 const MobileDropdown = styled.div`
   position: absolute;
   top: 100%;
   right: 1rem;
   background: white;
-  width: 220px;
+  width: 230px;
   border-radius: 14px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
   padding: 1.2rem;
   display: flex;
   flex-direction: column;
@@ -151,9 +150,16 @@ const MobileLink = styled(Link)`
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <Header>
+    <Header $scrolled={scrolled}>
       <Nav>
         {/* Logo */}
         <LogoBox to="/">
@@ -166,25 +172,26 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <MenuWrap>
-          <MenuItem to="/" end>Home</MenuItem>
-          <MenuItem to="/about">About</MenuItem>
-          <MenuItem to="/services">Services</MenuItem>
+          <MenuItem to="/" end $scrolled={scrolled}>Home</MenuItem>
+          <MenuItem to="/about" $scrolled={scrolled}>About</MenuItem>
+          <MenuItem to="/services" $scrolled={scrolled}>Services</MenuItem>
+          <MenuItem to="/careers" $scrolled={scrolled}>Careers</MenuItem>
           <CTA to="/contact">Contact</CTA>
         </MenuWrap>
 
         {/* Mobile Button */}
-        <MobileBtn onClick={() => setOpen(!open)}>
+        <MobileBtn $scrolled={scrolled} onClick={() => setOpen(!open)}>
           {open ? <X size={28} /> : <Menu size={28} />}
         </MobileBtn>
       </Nav>
 
-      {/* Mobile Dropdown Menu */}
+      {/* Mobile Menu */}
       {open && (
         <MobileDropdown>
           <MobileLink to="/" onClick={() => setOpen(false)}>Home</MobileLink>
           <MobileLink to="/about" onClick={() => setOpen(false)}>About</MobileLink>
           <MobileLink to="/services" onClick={() => setOpen(false)}>Services</MobileLink>
-          
+          <MobileLink to="/careers" onClick={() => setOpen(false)}>Careers</MobileLink>
           <MobileLink to="/contact" onClick={() => setOpen(false)}>Contact</MobileLink>
         </MobileDropdown>
       )}
