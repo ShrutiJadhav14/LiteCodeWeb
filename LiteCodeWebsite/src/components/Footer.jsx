@@ -80,11 +80,11 @@ const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
 
           {/* Brand */}
           <div>
-            <Link to="/" className="flex items-center gap-2">
+            <Link to="/" className="flex items-center gap-2 select-none">
               <img src={logo} alt="LiteCode Logo" className="w-10 h-8 object-contain" />
-              <span className="text-xl font-extrabold">
+              <span className="text-[28px] font-extrabold tracking-wide" style={{ fontFamily:"Georgia, 'Times New Roman', serif"}}>
                 <span className="text-sky-500">Lite</span>
-                <span className="text-orange-500">Code</span>
+                <span className="ml-1 text-orange-500">Code</span>
               </span>
             </Link>
 
