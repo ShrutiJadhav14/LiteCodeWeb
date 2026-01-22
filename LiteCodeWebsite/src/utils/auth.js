@@ -9,7 +9,7 @@ export const loginAdmin = (email, password) => {
     password === ADMIN_CREDENTIALS.password
   ) {
     localStorage.setItem("isAdmin", "true");
-    return true;
+    
   }
   return false;
 };
