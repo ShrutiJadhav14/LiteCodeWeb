@@ -117,6 +117,7 @@ const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
               <li><Link to="/" className="hover:text-white transition">Home</Link></li>
               <li><Link to="/about" className="hover:text-white transition">About</Link></li>
               <li><Link to="/services" className="hover:text-white transition">Services</Link></li>
+              <li><Link to="/careers" className="hover:text-white transition">Careers</Link></li>
               <li><Link to="/contact" className="hover:text-white transition">Contact</Link></li>
             </ul>
           </div>
