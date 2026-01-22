@@ -12,18 +12,19 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 
 import AdminProtectedRoute from "./routes/AdminProtectedGuard";
+import ScrollTop from "./utils/ScrollTop"; 
 
 const App = () => {
   return (
     <BrowserRouter>
+      <ScrollTop /> 
       <Navbar />
+
       <main className="pt-16">
         <Routes>
-         
-           {/* PUBLIC */}
+          {/* PUBLIC */}
           <Route path="/" element={<Home />} />
           <Route path="/admin-login" element={<AdminLogin />} />
-          <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
@@ -38,11 +39,10 @@ const App = () => {
               </AdminProtectedRoute>
             }
           />
-         </Routes>
-    
-        </main>
-        <Footer />
- 
+        </Routes>
+      </main>
+
+      <Footer />
     </BrowserRouter>
   ) 
 

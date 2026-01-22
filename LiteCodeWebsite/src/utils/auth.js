@@ -8,16 +8,16 @@ export const loginAdmin = (email, password) => {
     email === ADMIN_CREDENTIALS.email &&
     password === ADMIN_CREDENTIALS.password
   ) {
-    localStorage.setItem("isAdmin", "true");
-    
+    localStorage.setItem("admin_logged_in", "true");
+    return true;
   }
   return false;
 };
 
 export const logoutAdmin = () => {
-  localStorage.removeItem("isAdmin");
+  localStorage.removeItem("admin_logged_in");
 };
 
 export const isAdminLoggedIn = () => {
-  return localStorage.getItem("isAdmin") === "true";
+  return localStorage.getItem("admin_logged_in") === "true";
 };
