@@ -11,25 +11,48 @@ const ContactForm = ({ message, setMessage }) => {
 
   const isCareer = message?.toLowerCase().includes("apply");
 
- const sendEmail = async (e) => {
+const sendEmail = async (e) => {
   e.preventDefault();
   setLoading(true);
+  setStatus(null);
 
   try {
-    await emailjs.sendForm(
-      import.meta.env.VITE_EMAILJS_SERVICE_ID,
-      import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-      formRef.current,
-      import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+    let resumeBase64 = "";
+
+    // Convert resume to Base64 if exists
+    if (resume) {
+      resumeBase64 = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(resume);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (error) => reject(error);
+      });
+    }
+
+    await emailjs.send(
+      import.meta.env.VITE_SERVICE_ID,
+      import.meta.env.VITE_TEMPLATE_ID,
+      {
+        name: formRef.current.name.value,
+        email: formRef.current.email.value,
+        phone: formRef.current.phone.value,
+        message: formRef.current.message.value,
+        source: isCareer ? "Career Page" : "Contact Page",
+        resume_name: resume ? resume.name : "",
+        resume_file: resumeBase64 || "",
+      },
+      import.meta.env.VITE_PUBLIC_KEY
     );
-  } catch (error) {
-    console.warn("EmailJS error (ignored for now):", error);
-  } finally {
-    setStatus("success"); // 👈 ALWAYS show success to user
-    setLoading(false);
+
+    setStatus("success");
     formRef.current.reset();
     setMessage("");
     setResume(null);
+  } catch (error) {
+    console.error("EmailJS Error:", error);
+    setStatus("error");
+  } finally {
+    setLoading(false);
   }
 };
 

@@ -19,8 +19,9 @@ const Careers = () => {
 
   /* ---------------- LOAD JOBS ---------------- */
   useEffect(() => {
-    const stored = localStorage.getItem("admin_jobs");
-    setJobs(stored ? JSON.parse(stored) : []);
+    fetch("http://localhost/careers-api/get-job.php")
+    .then(res => res.json())
+    .then(data => setJobs(data))
   }, []);
 
   /* ---------------- FILTER JOBS ---------------- */
