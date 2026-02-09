@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { LogOut, Trash2, Pencil } from "lucide-react";
 
-const STORAGE_KEY = "admin_jobs";
-
 const JOB_TYPES = ["Full-time", "Part-time", "Internship", "Contract"];
 
 const AdminDashboard = () => {
@@ -20,30 +18,61 @@ const AdminDashboard = () => {
 
   const navigate = useNavigate();
 
-  /* ---------------- LOAD JOBS ---------------- */
+  /* ---------------- FETCH JOBS ---------------- */
+  const fetchJobs = async () => {
+    try {
+      const res = await fetch("http://localhost/careers-api/get-job.php");
+      const data = await res.json();
+      setJobs(data);
+    } catch (err) {
+      console.error("Fetch Error:", err);
+    }
+  };
+
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    setJobs(stored ? JSON.parse(stored) : []);
+    fetchJobs();
   }, []);
 
-  /* ---------------- SAVE JOBS ---------------- */
-  const saveJobs = (data) => {
-    setJobs(data);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  };
-
   /* ---------------- ADD / UPDATE ---------------- */
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (form.id) {
-      saveJobs(jobs.map((j) => (j.id === form.id ? form : j)));
+  const url = form.id
+    ? "http://localhost/careers-api/update-job.php"
+    : "http://localhost/careers-api/add-job.php";
+
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        id: form.id || "",
+        title: form.title,
+        location: form.location,
+        type: form.type,
+        experience: form.experience,
+        description: form.description,
+      }),
+    });
+
+    const text = await res.text();
+    console.log("RAW RESPONSE:", text);
+
+    const data = JSON.parse(text);
+
+    if (data.success) {
+      alert(form.id ? "Job Updated Successfully" : "Job Added Successfully");
+      resetForm();
+      fetchJobs();
     } else {
-      saveJobs([...jobs, { ...form, id: Date.now() }]);
+      alert(data.message || "Error");
     }
-
-    resetForm();
-  };
+  } catch (err) {
+    console.error("Submit Error:", err);
+  }
+};
 
   const resetForm = () =>
     setForm({
@@ -56,22 +85,41 @@ const AdminDashboard = () => {
     });
 
   /* ---------------- DELETE ---------------- */
-  const confirmDelete = () => {
-    saveJobs(jobs.filter((j) => j.id !== deleteId));
-    setDeleteId(null);
+  const confirmDelete = async () => {
+    try {
+      const res = await fetch(
+        "http://localhost/careers-api/delete-job.php",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: deleteId }),
+        }
+      );
+
+      const data = await res.json();
+
+      if (data.success) {
+        fetchJobs();
+        setDeleteId(null);
+      }
+    } catch (err) {
+      console.error("Delete Error:", err);
+    }
   };
 
   /* ---------------- LOGOUT ---------------- */
   const logout = () => {
-    localStorage.removeItem("admin_logged_in");
-    navigate("/admin-login");
-  };
+  localStorage.removeItem("admin_logged_in");
+  navigate("/admin-login", { replace: true });
+};
+
 
   return (
     <section className="min-h-screen bg-gray-100 py-20">
       <div className="max-w-7xl mx-auto px-6">
-
-        {/* HEADER */}
+        
         <div className="flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
           <h1 className="text-3xl font-extrabold text-gray-900">
             Admin Dashboard – Careers
@@ -122,7 +170,7 @@ const AdminDashboard = () => {
             </select>
 
             <input
-              placeholder="Experience (optional)"
+              placeholder="Experience"
               className="input"
               value={form.experience}
               onChange={(e) =>
@@ -194,37 +242,6 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* DELETE CONFIRMATION MODAL */}
-      {deleteId && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-2xl p-8 max-w-sm w-full shadow-xl">
-            <h3 className="text-xl font-bold text-gray-900 mb-3">
-              Delete Job?
-            </h3>
-            <p className="text-gray-600 mb-6">
-              Are you sure you want to delete this job posting? This action
-              cannot be undone.
-            </p>
-
-            <div className="flex justify-end gap-3">
-              <button
-                onClick={() => setDeleteId(null)}
-                className="px-5 py-2 rounded-lg border"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={confirmDelete}
-                className="px-5 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* INPUT STYLES */}
       <style>{`
         .input {
           width: 100%;
