@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import ClientsSection from "../components/ClientsSection";
 import StatsSection from "../components/StatsSection";
 import ChatBot from "../components/Chatbot";
+import TestimonialsSection from "../components/TestimonialsSection";
+
 /* ================= ANIMATION VARIANTS ================= */
 
 const fadeUp = {
@@ -198,6 +200,7 @@ function Home() {
           />
         </div>
       </section>
+      <TestimonialsSection />
 
       {/* ================= OUR SOLUTIONS ================= */}
     <section className="py-20 bg-white">
