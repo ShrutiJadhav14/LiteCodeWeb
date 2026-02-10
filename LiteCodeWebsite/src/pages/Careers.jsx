@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-
+import { setSEO } from "../utils/seo";
 const JOB_TYPES = [
   "All",
   "Full Time",
@@ -23,6 +23,18 @@ const Careers = () => {
     .then(res => res.json())
     .then(data => setJobs(data))
   }, []);
+useEffect(() => {
+  if (jobs.length > 0) {
+    setSEO({
+      title: `Careers at LiteCode | ${jobs.length} Open Positions`,
+      description: `LiteCode is hiring for ${jobs
+        .slice(0, 3)
+        .map((j) => j.title)
+        .join(", ")} and more roles. Apply now.`,
+    });
+  }
+}, [jobs]);
+
 
   /* ---------------- FILTER JOBS ---------------- */
   const filteredJobs = useMemo(() => {

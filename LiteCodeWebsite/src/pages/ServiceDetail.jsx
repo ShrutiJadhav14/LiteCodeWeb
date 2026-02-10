@@ -3,6 +3,9 @@ import { services } from "../data/servicesData";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { setSEO } from "../utils/seo";
+
 
 const ServiceDetail = () => {
   const { slug } = useParams();
@@ -19,6 +22,14 @@ const ServiceDetail = () => {
   }
    const Icon = service.icon;
 
+useEffect(() => {
+  if (service) {
+    setSEO({
+      title: `${service.title} | LiteCode`,
+      description: service.overview,
+    });
+  }
+}, [service]);
 
   return (
     <section className="bg-gray-50">

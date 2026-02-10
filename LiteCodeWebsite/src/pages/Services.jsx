@@ -29,6 +29,12 @@ const item = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0 },
 };
+useEffect(() => {
+  setSEO({
+    title: "Our Services | LiteCode",
+    description: "Explore LiteCode services including Web, Mobile, AI, Cloud, Cyber Security and more.",
+  });
+}, []);
 
 const Services = () => {
   return (

@@ -27,6 +27,7 @@ const fadeRight = {
 function Home() {
   const navigate = useNavigate();
 
+
   return (
     <>
       {/* ================= HERO SECTION ================= */}
