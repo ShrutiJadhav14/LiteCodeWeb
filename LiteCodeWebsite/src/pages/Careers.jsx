@@ -4,8 +4,8 @@ import { motion } from "framer-motion";
 import { setSEO } from "../utils/seo";
 const JOB_TYPES = [
   "All",
-  "Full Time",
-  "Part Time",
+  "Full-Time",
+  "Part-Time",
   "Internship",
   "Contract",
 ];

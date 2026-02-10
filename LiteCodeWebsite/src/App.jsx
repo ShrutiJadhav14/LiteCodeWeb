@@ -18,7 +18,7 @@ import ServiceDetail from "./pages/ServiceDetail";
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/LitecodeWebsite">
       <ScrollTop /> 
       <Navbar />
 

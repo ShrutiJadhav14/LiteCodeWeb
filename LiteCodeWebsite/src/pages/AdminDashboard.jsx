@@ -231,7 +231,7 @@ const handleSubmit = async (e) => {
                 </button>
 
                 <button
-                  onClick={() => setDeleteId(job.id)}
+                  onClick={() => {setDeleteId(job.id); confirmDelete();}}
                   className="flex items-center gap-2 px-4 py-2 rounded-lg border border-red-500 text-red-500 hover:bg-red-50 transition"
                 >
                   <Trash2 size={16} /> Delete
