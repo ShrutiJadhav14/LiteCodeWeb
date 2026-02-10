@@ -13,7 +13,8 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import WhatsAppFloat from "../components/WhatsAppFloat";
-
+import { useEffect } from "react";
+import { setSEO } from "../utils/seo";
 
 const container = {
   hidden: { opacity: 0 },
@@ -29,14 +30,17 @@ const item = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0 },
 };
-useEffect(() => {
-  setSEO({
-    title: "Our Services | LiteCode",
-    description: "Explore LiteCode services including Web, Mobile, AI, Cloud, Cyber Security and more.",
-  });
-}, []);
+
 
 const Services = () => {
+
+  useEffect(() => {
+      setSEO({
+        title: "Our Services | LiteCode",
+        description: "Explore LiteCode services including Web, Mobile, AI, Cloud, Cyber Security and more.",
+      });
+  }, []);
+
   return (
     <section className="py-24 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6">
