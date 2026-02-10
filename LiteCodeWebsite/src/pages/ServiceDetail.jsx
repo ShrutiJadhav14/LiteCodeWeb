@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { services } from "./Services";  
+import { services } from "../data/servicesData"; 
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -17,12 +17,15 @@ const ServiceDetail = () => {
       </div>
     );
   }
+   const Icon = service.icon;
+
 
   return (
     <section className="bg-gray-50">
       <div className="max-w-7xl mx-auto px-6 py-24 space-y-20">
 
         {/* HERO */}
+ 
        <motion.div
   initial={{ opacity: 0, y: 30 }}
   animate={{ opacity: 1, y: 0 }}
@@ -32,7 +35,7 @@ const ServiceDetail = () => {
   {/* Glow */}
   <div className="absolute -top-10 -left-10 w-48 h-48 bg-indigo-500/20 blur-3xl rounded-full" />
 
-  <service.icon size={60} className="text-indigo-600 mb-6 relative z-10" />
+   <Icon size={60} className="text-indigo-600 mb-6 relative z-10" />
 
   <h1 className="text-5xl font-extrabold text-gray-900 mb-4 leading-tight">
     {service.title}

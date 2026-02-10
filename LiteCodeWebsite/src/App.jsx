@@ -12,7 +12,8 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 
 import AdminProtectedRoute from "./routes/AdminProtectedGuard";
-import ScrollTop from "./utils/ScrollTop"; 
+import ScrollTop from "./utils/ScrollTop";
+import ServiceDetail from "./pages/ServiceDetail"; 
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
           <Route path="/admin-login" element={<AdminLogin />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/services/:slug" element={<ServiceDetail />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/careers" element={<Careers />} />
 
