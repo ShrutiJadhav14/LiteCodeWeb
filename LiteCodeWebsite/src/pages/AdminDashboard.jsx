@@ -21,7 +21,10 @@ const AdminDashboard = () => {
   /* ---------------- FETCH JOBS ---------------- */
   const fetchJobs = async () => {
     try {
-      const res = await fetch("http://localhost/careers-api/get-job.php");
+
+
+
+      const res = await fetch("http://ilitecode.in/careers-api/get-job.php");
       const data = await res.json();
       setJobs(data);
     } catch (err) {
@@ -38,8 +41,8 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const url = form.id
-    ? "http://localhost/careers-api/update-job.php"
-    : "http://localhost/careers-api/add-job.php";
+    ? "http://ilitecode.in/careers-api/update-job.php"
+    : "http://ilitecode.in/careers-api/add-job.php";
 
   try {
     const res = await fetch(url, {
@@ -88,7 +91,7 @@ const handleSubmit = async (e) => {
   const confirmDelete = async () => {
     try {
       const res = await fetch(
-        "http://localhost/careers-api/delete-job.php",
+        "http://ilitecode.in/careers-api/delete-job.php",
         {
           method: "POST",
           headers: {
@@ -231,7 +234,7 @@ const handleSubmit = async (e) => {
                 </button>
 
                 <button
-                  onClick={() => setDeleteId(job.id)}
+                  onClick={() => {setDeleteId(job.id); confirmDelete();}}
                   className="flex items-center gap-2 px-4 py-2 rounded-lg border border-red-500 text-red-500 hover:bg-red-50 transition"
                 >
                   <Trash2 size={16} /> Delete
